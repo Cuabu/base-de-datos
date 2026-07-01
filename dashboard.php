@@ -41,8 +41,10 @@ if (!isset($_SESSION['id'])) {
                 <i class="bi bi-speedometer2 me-2"></i>Panel Principal
             </a>
             
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
+            <button class="navbar-toggler border-0 shadow-none" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+
+    <i class="bi bi-list fs-1 text-primary"></i>
+
             </button>
 
             <div class="collapse navbar-collapse" id="navbarNav">
@@ -55,7 +57,7 @@ if (!isset($_SESSION['id'])) {
                         <ul class="dropdown-menu shadow-sm border-0 mt-2">
                             <li><a class="dropdown-item py-2" href="datos.php"><i class="bi bi-layers me-2"></i>Base de Datos</a></li>
                             <li><a class="dropdown-item py-2" href="../matrix/scripts/scripts.php"><i class="bi bi-gear me-2"></i>Scripts</a></li>
-                            <li><a class="dropdown-item py-2" href="#"><i class="bi bi-graph-up me-2"></i></a></li>
+                            <li><a class="dropdown-item py-2" href="#"><i class="bi bi-graph-up me-2"></i>espera</a></li>
                             <li><hr class="dropdown-divider"></li>
                         </ul>
                     </li>
@@ -67,7 +69,7 @@ if (!isset($_SESSION['id'])) {
                         <i class="bi bi-person-circle me-1"></i> <?php echo htmlspecialchars($_SESSION['nombre']); ?>
                     </span>
                     <a href="./logout.php" class="btn btn-outline-danger btn-sm rounded-pill px-3">
-                        <i class="bi bi-box-arrow-right me-1"></i> Cerrar sesión
+                        <i class="bi bi-box-arrow-left me-1"></i> Cerrar sesión
                     </a>
                 </div>
             </div>

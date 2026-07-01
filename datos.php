@@ -15,7 +15,7 @@ if (isset($_GET['eliminar'])) {
     $stmt_del = $conn->prepare("DELETE FROM personas WHERE id = ?");
     $stmt_del->bind_param("i", $id_del);
     if($stmt_del->execute()) {
-        header("Location: agregar.php");
+        header("Location: ../matrix/config/eliminar.php");
         exit;
     }
     $stmt_del->close();
@@ -167,7 +167,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             
             <?php echo $mensaje; ?>
 
-            <form action="agregar.php" method="POST" enctype="multipart/form-data">
+            <form action="../matrix/config/agregar.php" method="POST" enctype="multipart/form-data">
                 
                 <ul class="nav nav-tabs mb-4 justify-content-center" id="matrixTabs" role="tablist">
                     <li class="nav-item"><button class="nav-link active" data-bs-toggle="tab" data-bs-target="#personal" type="button" role="tab">1. Personal</button></li>
@@ -267,9 +267,14 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 </div>
 
                 <div class="d-flex justify-content-end gap-2 mt-4 pt-3 border-top border-secondary">
-                    <button type="reset" class="btn btn-outline-danger btn-sm"><i class="bi bi-arrow-counterclockwise"></i> Limpiar</button>
-                    <button type="submit" class="btn btn-matrix-primary px-4 fw-bold"><i class="bi bi-shield-lock-fill me-2"></i>Inyectar Registro</button>
-                </div>
+    <button type="reset" class="btn btn-outline-danger btn-sm">
+        <i class="bi bi-arrow-counterclockwise"></i> Limpiar
+    </button>
+
+    <button type="submit" class="btn btn-matrix-primary px-4 fw-bold">
+        <i class="bi bi-shield-lock-fill me-2"></i> Inyectar Registro
+    </button>
+</div>
             </form>
         </div>
     </div>
@@ -309,8 +314,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                                 <!-- SE AÑADIÓ EL BOTÓN "VER" QUE ACTIVA EL MODAL -->
                                 <div class="btn-group">
                                     <button type="button" class="btn btn-sm btn-outline-info" data-bs-toggle="modal" data-bs-target="#viewModal<?php echo $row['id']; ?>"><i class="bi bi-eye"></i> VER</button>
-                                    <a href="editar.php?id=<?php echo $row['id']; ?>" class="btn btn-sm btn-outline-warning">MOD</a>
-                                    <a href="agregar.php?eliminar=<?php echo $row['id']; ?>" class="btn btn-sm btn-outline-danger" onclick="return confirm('¿Confirmar purga permanente del registro?');">REJ</a>
+                                    <a href="../matrix/config/editar.php?id=<?php echo $row['id']; ?>" class="btn btn-sm btn-outline-warning">MOD</a>
+                                    <a href="../matrix/config/eliminar.php?id=<?php echo $row['id']; ?>" class="btn btn-sm btn-outline-danger" onclick="return confirm('¿Confirmar purga permanente del registro?');">REJ</a>
                                 </div>
                             </td>
                         </tr>
