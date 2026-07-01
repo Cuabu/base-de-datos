@@ -1,0 +1,8 @@
+psutil
+websockets
+websocket-client
+requests
+aiohttp
+py-cpuinfo
+WMI
+pywin32
