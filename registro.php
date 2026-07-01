@@ -5,14 +5,25 @@ $mensaje = "";
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
-    $nombre = trim($_POST['nombre']);
-    $usuario = trim($_POST['usuario']);
-    $password = trim($_POST['password']);
+    $nombre    = trim($_POST['nombre']);
+    $apellido  = trim($_POST['apellido']);
+    $usuario   = trim($_POST['usuario']);
+    $correo    = trim($_POST['correo']);
+    $password  = trim($_POST['password']);
 
-    if (!empty($nombre) && !empty($usuario) && !empty($password)) {
+    $rol = "Operador";
+    $estado = "Activo";
+
+    if (
+        !empty($nombre) &&
+        !empty($apellido) &&
+        !empty($usuario) &&
+        !empty($correo) &&
+        !empty($password)
+    ) {
 
         // Verificar si el usuario ya existe
-        $consulta = $conexion->prepare("SELECT id FROM usuarios WHERE usuario = ?");
+        $consulta = $conexion->prepare("SELECT id FROM administrador WHERE usuario = ?");
         $consulta->execute([$usuario]);
 
         if ($consulta->rowCount() > 0) {
@@ -26,20 +37,42 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             // Encriptar contraseña
             $passwordHash = password_hash($password, PASSWORD_DEFAULT);
 
-            // Insertar usuario
-            $insertar = $conexion->prepare("INSERT INTO usuarios(nombre, usuario, password)
-                                           VALUES(?,?,?)");
+            // Insertar administrador
+            $insertar = $conexion->prepare("
+                INSERT INTO administrador
+                (
+                    nombre,
+                    apellido,
+                    usuario,
+                    correo,
+                    password,
+                    rol,
+                    estado
+                )
+                VALUES
+                (
+                    ?, ?, ?, ?, ?, ?, ?
+                )
+            ");
 
-            if ($insertar->execute([$nombre, $usuario, $passwordHash])) {
+            if ($insertar->execute([
+                $nombre,
+                $apellido,
+                $usuario,
+                $correo,
+                $passwordHash,
+                $rol,
+                $estado
+            ])) {
 
                 $mensaje = '<div class="alert alert-success">
-                                Usuario registrado correctamente.
+                                Administrador registrado correctamente.
                             </div>';
 
             } else {
 
                 $mensaje = '<div class="alert alert-danger">
-                                Error al registrar el usuario.
+                                Error al registrar el administrador.
                             </div>';
 
             }
@@ -66,36 +99,36 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
 <meta name="viewport" content="width=device-width, initial-scale=1">
 
-<title>Registrar Usuario</title>
+<title>Registrar Administrador</title>
 
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
 
 </head>
 
 <!-- Barra de navegación -->
-    <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+<nav class="navbar navbar-expand-lg navbar-dark bg-primary">
 
-        <div class="container">
+    <div class="container">
 
-            <a class="navbar-brand" href="index.php">
-                Mi Sistema 
+        <a class="navbar-brand" href="index.php">
+            Mi Sistema
+        </a>
+
+        <div>
+
+            <a href="login.php" class="btn btn-outline-light me-2">
+                Iniciar Sesión
             </a>
 
-            <div>
-
-                <a href="login.php" class="btn btn-outline-light me-2">
-                    Iniciar Sesión
-                </a>
-
-                <a href="registro.php" class="btn btn-warning">
-                    Registrarse
-                </a>
-
-            </div>
+            <a href="registro.php" class="btn btn-warning">
+                Registrarse
+            </a>
 
         </div>
 
-    </nav>
+    </div>
+
+</nav>
 
 <body class="bg-light">
 
@@ -109,7 +142,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
 <div class="card-header bg-success text-white text-center">
 
-<h3>Registrar Usuario</h3>
+<h3>Registrar Administrador</h3>
 
 </div>
 
@@ -121,11 +154,35 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
 <div class="mb-3">
 
-<label class="form-label">Nombre Completo</label>
+<label class="form-label">Nombre</label>
 
 <input
 type="text"
 name="nombre"
+class="form-control"
+required>
+
+</div>
+
+<div class="mb-3">
+
+<label class="form-label">Apellido</label>
+
+<input
+type="text"
+name="apellido"
+class="form-control"
+required>
+
+</div>
+
+<div class="mb-3">
+
+<label class="form-label">Correo electrónico</label>
+
+<input
+type="email"
+name="correo"
 class="form-control"
 required>
 
@@ -159,7 +216,7 @@ required>
 type="submit"
 class="btn btn-success w-100">
 
-Registrar Usuario
+Registrar Administrador
 
 </button>
 

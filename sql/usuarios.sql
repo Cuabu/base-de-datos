@@ -4,6 +4,33 @@ COLLATE utf8mb4_unicode_ci;
 
 USE gestion_personas;
 
+    -- BASE DE DATOS ADMINISTRADOR
+
+CREATE TABLE administrador (
+
+    id INT AUTO_INCREMENT PRIMARY KEY,
+
+    -- Información del administrador
+    nombre VARCHAR(100) NOT NULL,
+    apellido VARCHAR(100),
+    usuario VARCHAR(50) NOT NULL UNIQUE,
+    correo VARCHAR(150) UNIQUE,
+
+    -- Seguridad
+    password VARCHAR(255) NOT NULL,
+
+    -- Estado de la cuenta
+    rol ENUM('Administrador','Supervisor','Operador') DEFAULT 'Operador',
+    estado ENUM('Activo','Inactivo') DEFAULT 'Activo',
+
+    -- Auditoría
+    ultimo_acceso DATETIME NULL,
+    fecha_creacion TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    fecha_actualizacion TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+        ON UPDATE CURRENT_TIMESTAMP
+
+);
+
 CREATE TABLE personas (
 
     id INT AUTO_INCREMENT PRIMARY KEY,
@@ -73,3 +100,4 @@ CREATE TABLE personas (
         ON UPDATE CURRENT_TIMESTAMP);
 ALTER TABLE personas ADD placa_carro VARCHAR(20);
 ALTER TABLE personas ADD modelo_carro VARCHAR(100);
+

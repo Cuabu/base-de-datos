@@ -7,37 +7,54 @@ require './config/conexion.php';
 $usuario = trim($_POST['usuario']);
 $password = trim($_POST['password']);
 
-$sql = "SELECT * FROM usuarios WHERE usuario = :usuario";
+$sql = "SELECT * FROM administrador
+        WHERE usuario = :usuario
+        AND estado = 'Activo'";
 
 $stmt = $conexion->prepare($sql);
 
-$stmt->bindParam(":usuario",$usuario);
+$stmt->bindParam(":usuario", $usuario);
 
 $stmt->execute();
 
-if($stmt->rowCount()==1){
+if ($stmt->rowCount() == 1) {
 
-$datos = $stmt->fetch(PDO::FETCH_ASSOC);
+    $datos = $stmt->fetch(PDO::FETCH_ASSOC);
 
-if(password_verify($password,$datos['password'])){
+    if (password_verify($password, $datos['password'])) {
 
-session_regenerate_id(true);
+        // Actualizar último acceso
+        $actualizar = $conexion->prepare("
+            UPDATE administrador
+            SET ultimo_acceso = NOW()
+            WHERE id = :id
+        ");
 
-$_SESSION['id']=$datos['id'];
-$_SESSION['nombre']=$datos['nombre'];
-$_SESSION['usuario']=$datos['usuario'];
+        $actualizar->bindParam(":id", $datos['id']);
+        $actualizar->execute();
 
-header("Location: ./dashboard.php");
-exit;
+        session_regenerate_id(true);
 
-}else{
+        $_SESSION['id'] = $datos['id'];
+        $_SESSION['nombre'] = $datos['nombre'];
+        $_SESSION['apellido'] = $datos['apellido'];
+        $_SESSION['usuario'] = $datos['usuario'];
+        $_SESSION['correo'] = $datos['correo'];
+        $_SESSION['rol'] = $datos['rol'];
 
-header("Location: ./login.php");
+        header("Location: ./dashboard.php");
+        exit;
 
-}
+    } else {
 
-}else{
+        header("Location: ./login.php");
+        exit;
 
-header("Location: ./login.php");
+    }
+
+} else {
+
+    header("Location: ./login.php");
+    exit;
 
 }
