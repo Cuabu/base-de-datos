@@ -1,0 +1,1 @@
+python /data/data/com.termux/files/home/proyecto/main.py
